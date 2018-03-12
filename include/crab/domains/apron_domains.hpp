@@ -186,7 +186,7 @@ namespace crab {
             switch (ApronDom) {
               case APRON_INT: m_apman = box_manager_alloc (); break;
               case APRON_OCT: m_apman = oct_manager_alloc (); break;
-              case (APRON_OPT_OCT): m_apman = opt_oct_manager_alloc (); break;
+              // case (APRON_OPT_OCT): m_apman = opt_oct_manager_alloc (); break;
               case APRON_PK: m_apman = pk_manager_alloc (false); break;
               default: CRAB_ERROR("unknown apron domain");
             }
@@ -867,10 +867,10 @@ namespace crab {
                 return apron_domain_t (apPtr (get_man(), 
                                               ap_abstract0_oct_narrowing (get_man(),
                                                                           &*x, &*o.m_apstate)), m);
-              case APRON_OPT_OCT:
-                return apron_domain_t (apPtr (get_man(), 
-                                              ap_abstract0_opt_oct_narrowing (get_man(),
-                                                                              &*x, &*o.m_apstate)), m);
+              // case APRON_OPT_OCT:
+              //   return apron_domain_t (apPtr (get_man(), 
+              //                                 ap_abstract0_opt_oct_narrowing (get_man(),
+              //                                                                 &*x, &*o.m_apstate)), m);
               case APRON_INT:
               case APRON_PK:
               default:
@@ -1534,7 +1534,7 @@ namespace crab {
           switch (ApronDom) {
             case APRON_INT:     return "ApronIntervals"; 
             case APRON_OCT:     return "ApronOctagon"; 
-            case APRON_OPT_OCT: return "ApronOptimizedOctagon"; 
+            // case APRON_OPT_OCT: return "ApronOptimizedOctagon"; 
             case APRON_PK:      return "ApronNewPolka";
             default: CRAB_ERROR("Unknown apron domain");
           }
