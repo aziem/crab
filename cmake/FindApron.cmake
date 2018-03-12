@@ -12,16 +12,15 @@ if (NOT APRON_FOUND)
    
    find_library(Apron_Polka_Lib NAMES libpolkaMPQ.a PATHS ${APRON_ROOT}/lib)
    ## octD is faster than octMPQ
-   find_library(Apron_Oct_Lib NAMES liboctD.a PATHS ${APRON_ROOT}/lib)
+   find_library(Apron_Oct_Lib NAMES liboctMPQ.a PATHS ${APRON_ROOT}/lib)
    # find_library(Apron_Oct_Lib NAMES octMPQ PATHS ${APRON_ROOT}/lib)
-   find_library(Apron_Opt_Oct_Lib NAMES liboptoct.a PATHS ${APRON_ROOT}/lib)
-   find_library(Apron_Opt_Oct_utils_Lib NAMES liblinkedlistapi.a PATHS ${APRON_ROOT}/lib)
+   #find_library(Apron_Opt_Oct_Lib NAMES liboptoct.a PATHS ${APRON_ROOT}/lib)
+   #find_library(Apron_Opt_Oct_utils_Lib NAMES liblinkedlistapi.a PATHS ${APRON_ROOT}/lib)
    find_library(Apron_Apron_Lib NAMES libapron.a PATHS ${APRON_ROOT}/lib)
    find_library(Apron_Box_Lib NAMES libboxMPQ.a PATHS ${APRON_ROOT}/lib)
    find_library(Apron_Itv_Lib NAMES libitvMPQ.a PATHS ${APRON_ROOT}/lib)
    
    set(APRON_LIBRARY ${Apron_Polka_Lib} ${Apron_Oct_Lib} 
-     ${Apron_Opt_Oct_Lib} ${Apron_Opt_Oct_utils_Lib}
      ${Apron_Apron_Lib} ${Apron_Box_Lib} ${Apron_Itv_Lib} )
    
    include (FindPackageHandleStandardArgs)
