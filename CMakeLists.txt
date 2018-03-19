@@ -154,9 +154,9 @@ if (GIT_FOUND)
 
   if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     # Mac OS X specific code
-    set (APRON_TAG "origin/floyd" CACHE STRING "apron tag to use")
+    set (APRON_TAG "origin/floyd2" CACHE STRING "apron tag to use")
   else ()
-    set (APRON_TAG "origin/floyd" CACHE STRING "apron tag to use")
+    set (APRON_TAG "origin/floyd2" CACHE STRING "apron tag to use")
   endif()
   
   ExternalProject_Add(apron
