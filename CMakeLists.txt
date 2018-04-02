@@ -40,6 +40,10 @@ endif()
 option (ENABLE_TESTS "Enable tests" OFF)
 option (USE_LDD   "Enable Ldd library" OFF)
 option (USE_APRON "Enable Apron library" OFF)
+option (USE_APLAS "Enable APLAS version of Apron library" OFF)
+option (USE_HASH "Enable Hashing CoDBM version of Apron libary" OFF)
+option (USE_HASH_OPT "Enable Hash CoDBM + optimisations of Apron library" OFF)
+option (USE_APRON_ORIG "Use original Apron library" OFF)
 option (USE_STATS "Enable statistics" ON)
 option (USE_LOG   "Enable logging for debugging purposes" ON)
 option (BUILD_CRAB_LIBS_SHARED "Build all Crab libraries dynamically." ON)
@@ -152,26 +156,52 @@ if (GIT_FOUND)
      endif ()
   endif ()
 
-  if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    # Mac OS X specific code
-    set (APRON_TAG "origin/floyd2" CACHE STRING "apron tag to use")
-  else ()
-    set (APRON_TAG "origin/floyd2" CACHE STRING "apron tag to use")
-  endif()
+  # Removed for now - only building on Linux for now
+  # if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  #   # Mac OS X specific code
+  #   set (APRON_TAG "origin/floyd2" CACHE STRING "apron tag to use")
+  # else ()
+  #   set (APRON_TAG "origin/floyd2" CACHE STRING "apron tag to use")
+  # endif()
   
-  ExternalProject_Add(apron
-    GIT_REPOSITORY /home/aziem/repos/apron-implementation
-    GIT_TAG ${APRON_TAG}
-    INSTALL_DIR ${CMAKE_BINARY_DIR}/run/apron
-    CONFIGURE_COMMAND echo "Apron does not need a configure"
-    BUILD_IN_SOURCE 1
-    BUILD_COMMAND make CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} 
-    APRON_PREFIX=<INSTALL_DIR> GMP_PREFIX=${GMP_SEARCH_PATH} MPFR_PREFIX=${MPFR_SEARCH_PATH} 
-    INSTALL_COMMAND 
-    make APRON_PREFIX=<INSTALL_DIR> GMP_PREFIX=${GMP_SEARCH_PATH} MPFR_PREFIX=${MPFR_SEARCH_PATH} install
-    LOG_CONFIGURE 1
-    LOG_INSTALL 1
-    LOG_BUILD 1)
+  if (USE_HASH)
+    set (APRON_TAG "origin/floyd" CACHE STRING "apron tag to use")
+  elseif (USE_HASH_OPT)
+    set (APRON_TAG "origin/floyd2" CACHE STRING "apron tag to use")
+  elseif (USE_APLAS)
+    set (APRON_TAG "origin/aplas2017" CACHE STRING "apron tag to use")
+  endif ()
+
+  if (USE_APRON_ORIG)
+    ExternalProject_Add(apron
+      GIT_REPOSITORY /home/aziem/repos/apron-orig
+      GIT_TAG "origin/master"
+      INSTALL_DIR ${CMAKE_BINARY_DIR}/run/apron
+      # Original apron requires a config command as Makefile.config is not in repo
+      CONFIGURE_COMMAND ./configure --no-java --no-ppl
+      BUILD_IN_SOURCE 1
+      BUILD_COMMAND make CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} 
+      APRON_PREFIX=<INSTALL_DIR> GMP_PREFIX=${GMP_SEARCH_PATH} MPFR_PREFIX=${MPFR_SEARCH_PATH} 
+      INSTALL_COMMAND 
+      make APRON_PREFIX=<INSTALL_DIR> GMP_PREFIX=${GMP_SEARCH_PATH} MPFR_PREFIX=${MPFR_SEARCH_PATH} install
+      LOG_CONFIGURE 1
+      LOG_INSTALL 1
+      LOG_BUILD 1)
+  else ()
+    ExternalProject_Add(apron
+      GIT_REPOSITORY /home/aziem/repos/apron-implementation
+      GIT_TAG ${APRON_TAG}
+      INSTALL_DIR ${CMAKE_BINARY_DIR}/run/apron
+      CONFIGURE_COMMAND echo "Apron does not need a configure"
+      BUILD_IN_SOURCE 1
+      BUILD_COMMAND make CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} 
+      APRON_PREFIX=<INSTALL_DIR> GMP_PREFIX=${GMP_SEARCH_PATH} MPFR_PREFIX=${MPFR_SEARCH_PATH} 
+      INSTALL_COMMAND 
+      make APRON_PREFIX=<INSTALL_DIR> GMP_PREFIX=${GMP_SEARCH_PATH} MPFR_PREFIX=${MPFR_SEARCH_PATH} install
+      LOG_CONFIGURE 1
+      LOG_INSTALL 1
+      LOG_BUILD 1)
+    endif ()
 else ()
   message (STATUS "Could not find git. Not downloading apron")
 endif()
