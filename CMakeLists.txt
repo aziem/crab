@@ -192,7 +192,7 @@ if (GIT_FOUND)
       GIT_REPOSITORY /home/aziem/repos/apron-implementation
       GIT_TAG ${APRON_TAG}
       INSTALL_DIR ${CMAKE_BINARY_DIR}/run/apron
-      CONFIGURE_COMMAND echo "Apron does not need a configure"
+      CONFIGURE_COMMAND ./configure --no-java --no-ppl
       BUILD_IN_SOURCE 1
       BUILD_COMMAND make CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} 
       APRON_PREFIX=<INSTALL_DIR> GMP_PREFIX=${GMP_SEARCH_PATH} MPFR_PREFIX=${MPFR_SEARCH_PATH} 
