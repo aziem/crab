@@ -12,7 +12,7 @@ if (NOT APRON_FOUND)
    
    find_library(Apron_Polka_Lib NAMES libpolkaMPQ.a PATHS ${APRON_ROOT}/lib)
    ## octD is faster than octMPQ
-   find_library(Apron_Oct_Lib NAMES liboctMPQ.a PATHS ${APRON_ROOT}/lib)
+   find_library(Apron_Oct_Lib NAMES liboctD.a PATHS ${APRON_ROOT}/lib)
    # find_library(Apron_Oct_Lib NAMES octMPQ PATHS ${APRON_ROOT}/lib)
    #find_library(Apron_Opt_Oct_Lib NAMES liboptoct.a PATHS ${APRON_ROOT}/lib)
    #find_library(Apron_Opt_Oct_utils_Lib NAMES liblinkedlistapi.a PATHS ${APRON_ROOT}/lib)
