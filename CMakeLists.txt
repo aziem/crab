@@ -166,17 +166,30 @@ if (GIT_FOUND)
   # endif()
   
   if (USE_HASH)
-    set (APRON_TAG "origin/floyd")
+    set (APRON_TAG "origin/sas-release")
   elseif (USE_HASH_OPT)
-    set (APRON_TAG "origin/floyd2")
-  elseif (USE_APLAS)
-    set (APRON_TAG "origin/aplas2017")
+    set (APRON_TAG "origin/hash")
   endif ()
 
   if (USE_APRON_ORIG)
     ExternalProject_Add(apron
-      GIT_REPOSITORY /home/aziem/repos/apron-orig
+      GIT_REPOSITORY "https://github.com/aziem/apron-orig.git"
       GIT_TAG "origin/master"
+      INSTALL_DIR ${CMAKE_BINARY_DIR}/run/apron
+      # Original apron requires a config command as Makefile.config is not in repo
+      CONFIGURE_COMMAND ./configure --no-java --no-ppl
+      BUILD_IN_SOURCE 1
+      BUILD_COMMAND make CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} 
+      APRON_PREFIX=<INSTALL_DIR> GMP_PREFIX=${GMP_SEARCH_PATH} MPFR_PREFIX=${MPFR_SEARCH_PATH} 
+      INSTALL_COMMAND 
+      make APRON_PREFIX=<INSTALL_DIR> GMP_PREFIX=${GMP_SEARCH_PATH} MPFR_PREFIX=${MPFR_SEARCH_PATH} install
+      LOG_CONFIGURE 1
+      LOG_INSTALL 1
+      LOG_BUILD 1)
+  elseif (USE_APLAS)
+     ExternalProject_Add(apron
+      GIT_REPOSITORY "https://github.com/aziem/apron-aplas-2017.git"
+      GIT_TAG "origin/aplas2017-release"
       INSTALL_DIR ${CMAKE_BINARY_DIR}/run/apron
       # Original apron requires a config command as Makefile.config is not in repo
       CONFIGURE_COMMAND ./configure --no-java --no-ppl
@@ -190,7 +203,7 @@ if (GIT_FOUND)
       LOG_BUILD 1)
   else ()
     ExternalProject_Add(apron
-      GIT_REPOSITORY /home/aziem/repos/apron-implementation
+      GIT_REPOSITORY "https://github.com/aziem/apron-kent.git"
       GIT_TAG ${APRON_TAG}
       INSTALL_DIR ${CMAKE_BINARY_DIR}/run/apron
       CONFIGURE_COMMAND ./configure --no-java --no-ppl
